@@ -22,10 +22,12 @@
 
 
     <modules>
+        <module>content-bot-test</module>
         <module>eureka01</module>
         <module>content-bot-usage</module>
         <module>content-bot-search</module>
         <module>content-bot-online</module>
+        <module>content-bot-jmeter</module>
     </modules>
 
     <dependencyManagement>
