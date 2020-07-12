@@ -14,18 +14,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Time
  */
 
-@Controller
+@RestController
 @RequestMapping("/index")
 public class IndexController2 {
 
     private AtomicInteger num=new AtomicInteger(1);
 
 
-    @RequestMapping("/num")
-    @ResponseBody
+    @GetMapping("/num")
     public  String  index01 (){
         LocalTime lt = LocalTime.now();
-        String time=lt.getHour()+":"+lt.getMinute()+":"+lt.getSecond();
+        String time=lt.getHour()+":"+lt.getMinute()+":"+lt.getSecond()+":"+lt.getNano();
         String s=String.format("当前线程:%s,累计访问:%s,时间:%s",Thread.currentThread().getName(),num.getAndIncrement(),time);
         System.out.println(s);
         return s;

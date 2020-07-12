@@ -28,6 +28,7 @@
         <module>content-bot-search</module>
         <module>content-bot-online</module>
         <module>content-bot-jmeter</module>
+        <module>content-bot-sentinel</module>
     </modules>
 
     <dependencyManagement>
