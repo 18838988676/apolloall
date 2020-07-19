@@ -29,6 +29,8 @@
         <module>content-bot-online</module>
         <module>content-bot-jmeter</module>
         <module>content-bot-sentinel</module>
+        <module>content-bot-apollo</module>
+        <module>content-bot-apollo2</module>
     </modules>
 
     <dependencyManagement>

@@ -2,6 +2,7 @@ package com.cn.content;
 
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
@@ -22,8 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 @RestController
-@RequestMapping("/index2")
-public class IndexSentinelController {
+@RequestMapping("/index3")
+public class IndexSentinelController2 {
 
     private AtomicInteger num=new AtomicInteger(1);
 
@@ -36,17 +37,26 @@ public class IndexSentinelController {
         System.out.println(s);
         return s;
     }
-    private final static String key="Hello";
-    private final static String key2="Hello2";
+    private final static String key="Hello111";
+    private final static String key2="Hello2111";
+    private final static String second="second111";
 
     @GetMapping("/second")
     public  String index02 (){
-        String msg="";
         initFlowRules();
-            try (Entry entry= SphU.entry(key)){
-                msg="success";
-            }catch (Exception e){
-                msg="Blocked";
+        Entry entry2=null;
+        String msg="";
+        try {
+
+            entry2=SphU.entry(second);
+
+
+        }catch (Exception e){
+
+        }finally {
+            if(entry2!=null){
+                entry2.exit();
+            }
         }
         System.out.println(msg);
             return msg;
@@ -56,8 +66,7 @@ private void initFlowRules(){
     FlowRule rule=new FlowRule();
     rule.setResource(key);
     rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-    rule.setLimitApp("default");
-    rule.setCount(40);
+    rule.setCount(90);
     rules.add(rule);
     FlowRuleManager.loadRules(rules);
 }
@@ -84,6 +93,42 @@ private void initFlowRules(){
         rule.setResource(key2);
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
         rule.setCount(20);
+        rules.add(rule);
+        FlowRuleManager.loadRules(rules);
+    }
+
+    private final static String main="main111";
+    public static void main(String[] args) {
+        initFlowRulesMain();
+        Entry entry2=null;
+        while (true){
+
+            try {
+                entry2=SphU.entry(main);
+
+                System.out.println("success,");
+                Thread.sleep(500);
+
+            }catch (BlockException e){
+                System.out.println("Boocked,");
+            }catch (Exception e){
+                System.out.println(",Exception,");
+            }
+            finally {
+                if(entry2!=null){
+                    entry2.exit();
+                }
+            }
+        }
+
+    }
+    private static void initFlowRulesMain(){
+        List<FlowRule> rules=new ArrayList<>();
+        FlowRule rule=new FlowRule();
+        rule.setResource(main);
+        rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        rule.setLimitApp("default");
+        rule.setCount(1);
         rules.add(rule);
         FlowRuleManager.loadRules(rules);
     }
